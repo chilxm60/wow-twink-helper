@@ -1,0 +1,4 @@
+aiohttp>=3.9.0
+orjson>=3.10.0
+xxhash>=3.4.1
+colorama>=0.4.6
