@@ -1,6 +1,7 @@
 # realms.py
+
 # ==========================================
-# MASTER REALM LIST (EU) - COMPLETE & GROUPED
+# MASTER REALM LIST (EU)
 # Data Source: Mega Alerts / Blizzard API
 # ==========================================
 REALMS = {
