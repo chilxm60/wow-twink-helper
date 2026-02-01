@@ -1,6 +1,9 @@
 # WoW Twink Helper
 
 Small tool that watches the World of Warcraft Auction House for specific items (item id + item level + max price) and prints a line when it finds one.
+**Update:** Works for **both EU and US (NA)** regions now.  
+Choose the region in `config.py` and the tool will automatically use the correct realm list.
+
 
 Optionally, it can send the same line to a Discord channel via webhook.
 
@@ -77,12 +80,18 @@ CLIENT_SECRET = "your blizzard client secret"
 Go to https://develop.battle.net/access/clients and create a client, get the blizzard oauth client and secret ids.
 You will put these values in config.py `WOW_CLIENT_ID` and `WOW_CLIENT_SECRET`.
 
-Region / locale (EU default):
+Region / locale:
 
 ```python
+# EU example
 REGION = "eu"
-NAMESPACE = "dynamic-eu"
 LOCALE = "en_GB"
+
+# US / NA example
+# REGION = "us"
+# LOCALE = "en_US"
+
+NAMESPACE = f"dynamic-{REGION}"
 ```
 
 Scan interval and parallel realms:
