@@ -10,17 +10,49 @@ import xxhash
 
 import config
 from utils import JSON_LOADS
-from realms import REALMS
+
+# Region specific import EU/NA
+region = (config.REGION or "").lower()
+
+if region == "eu":
+    from realms_eu import REALMS
+elif region in ("us", "na"):
+    from realms_na import REALMS
+else:
+    raise ValueError(f"Unsupported REGION {config.REGION!r}; use 'eu' or 'us'.")
+
 from api_parser import SafeAuction
 from ilvl_fetcher import resolve_ilvl, fetch_tww_static_data
+
+
+# ---------------------------------------------------------
+# Globals / caches
+# ---------------------------------------------------------
+
+# connected_realm_id -> readable name (first name we saw for this id)
+CONNECTED_REALM_NAMES: Dict[int, str] = {}
+for name, rid in REALMS.items():
+    CONNECTED_REALM_NAMES.setdefault(rid, name)
+
+ACCESS_TOKEN: Optional[str] = None
+TOKEN_EXPIRES_AT: float = 0.0
+TOKEN_LOCK = asyncio.Lock()
+
+# realm_id -> last xxhash of the payload
+REALM_HASHES: Dict[int, str] = {}
+
+# All connected realm IDs from the selected REALMS map (EU or NA).
+REALM_IDS = sorted(set(REALMS.values()))
+
+
 
 
 # ---------------------------------------------------------
 # Global setup
 # ---------------------------------------------------------
 
-# All connected realm IDs from realms.py (92 EU realms in your case).
-REALM_IDS = list(set(REALMS.values()))
+# All connected realm IDs from the selected REALMS map (EU or NA).
+REALM_IDS = sorted(set(REALMS.values()))
 
 # connected_realm_id -> readable name (first name we saw for this id)
 CONNECTED_REALM_NAMES: Dict[int, str] = {}
